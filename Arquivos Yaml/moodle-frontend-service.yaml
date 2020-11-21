@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  labels:
+    app: moodle
+spec:
+  type: LoadBalancer
+  externalIPs:
+  - 200.129.241.133
+  - 200.129.241.135
+  - 200.129.241.137
+  ports:
+  - port: 80
+  selector:
+    app: moodle

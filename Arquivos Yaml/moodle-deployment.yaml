@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moodle
+  labels:
+    app: moodle
+spec:
+  selector:
+    matchLabels:
+      app: moodle
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: moodle
+    spec:
+      containers:
+      - name: moodle
+#        image: moodlehq/moodle-php-apache:7.4-buster
+        image: moodlehq/moodle-php-apache:7.2-stretch
+        volumeMounts:
+        - mountPath: "/var/www/"
+          name: gluster-vol
+          readOnly: false
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1028Mi"
+            cpu: "1000m"
+      volumes:
+      - name: gluster-vol
+        persistentVolumeClaim:
+          claimName: gluster-claim
+#      nodeSelector:
+#        disktype: discomelhor
